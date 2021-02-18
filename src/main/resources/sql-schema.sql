@@ -20,8 +20,8 @@ CREATE TABLE IF NOT EXISTS `items` (
 
 CREATE TABLE `orders` (
   `id` int NOT NULL,
-  `custid` int DEFAULT NULL,
-  `itemid` int DEFAULT NULL,
+  `custid` int NOT NULL,
+  `itemid` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `custid` (`custid`),
   KEY `itemid` (`itemid`),
