@@ -18,4 +18,14 @@ CREATE TABLE IF NOT EXISTS `items` (
   PRIMARY KEY (`id`)
 );
 
+CREATE TABLE `orders` (
+  `id` int NOT NULL,
+  `custid` int DEFAULT NULL,
+  `itemid` int DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `custid` (`custid`),
+  KEY `itemid` (`itemid`),
+  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`custid`) REFERENCES `customers` (`id`),
+  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
+);
 
