@@ -25,7 +25,7 @@ CREATE TABLE `orders` (
   PRIMARY KEY (`id`),
   KEY `custid` (`custid`),
   KEY `itemid` (`itemid`),
-  CONSTRAINT `orders_ibfk_1` FOREIGN KEY (`custid`) REFERENCES `customers` (`id`),
-  CONSTRAINT `orders_ibfk_2` FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
+  FOREIGN KEY (`custid`) REFERENCES `customers` (`id`),
+  FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
 );
 
