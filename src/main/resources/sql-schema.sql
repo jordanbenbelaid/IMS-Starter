@@ -18,7 +18,7 @@ CREATE TABLE IF NOT EXISTS `items` (
   PRIMARY KEY (`id`)
 );
 
-CREATE TABLE `orders` (
+CREATE TABLE IF NOT EXISTS `orders` (
   `id` int NOT NULL,
   `custid` int NOT NULL,
   `itemid` int NOT NULL,
@@ -29,3 +29,15 @@ CREATE TABLE `orders` (
   FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
 );
 
+CREATE TABLE `orderline` (
+  `id` int NOT NULL,
+  `orderid` int DEFAULT NULL,
+  `itemid` int DEFAULT NULL,
+  `quantity` int DEFAULT NULL,
+  `price` float DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  KEY `orderid` (`orderid`),
+  KEY `itemid` (`itemid`),
+  FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`),
+  FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
+) 
