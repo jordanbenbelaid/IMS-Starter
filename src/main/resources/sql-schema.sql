@@ -21,12 +21,12 @@ CREATE TABLE IF NOT EXISTS `items` (
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int NOT NULL,
   `custid` int NOT NULL,
-  `itemid` int NOT NULL,
+  `orderid` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `custid` (`custid`),
-  KEY `itemid` (`itemid`),
+  KEY `orderid` (`orderid`),
   FOREIGN KEY (`custid`) REFERENCES `customers` (`id`),
-  FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
+  FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`)
 );
 
 CREATE TABLE `orderline` (
