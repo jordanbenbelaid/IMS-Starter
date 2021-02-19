@@ -14,9 +14,10 @@ CREATE TABLE IF NOT EXISTS `ims`.`customers` (
 CREATE TABLE IF NOT EXISTS `items` (
   `id` int NOT NULL,
   `itemname` varchar(100) NOT NULL,
-  `itemprice` float NOT NULL,
+  `itemprice` double NOT NULL,
   PRIMARY KEY (`id`)
-);
+); 
+
 
 CREATE TABLE IF NOT EXISTS `orders` (
   `id` int NOT NULL,
@@ -34,10 +35,11 @@ CREATE TABLE `orderline` (
   `orderid` int DEFAULT NULL,
   `itemid` int DEFAULT NULL,
   `quantity` int DEFAULT NULL,
-  `price` float DEFAULT NULL,
+  `price` double DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`),
   KEY `itemid` (`itemid`),
   FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`),
   FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
-) 
+);
+
