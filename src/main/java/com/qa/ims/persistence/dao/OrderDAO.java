@@ -14,7 +14,7 @@ import org.apache.logging.log4j.Logger;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.DBUtils;
 
-public class OrderDAO implements Dao<Order>{
+public abstract class OrderDAO implements Dao<Order>{
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
@@ -98,29 +98,29 @@ public class OrderDAO implements Dao<Order>{
 		return null;
 	}
 	
-	/**
-	 * Updates a customer in the database
-	 * 
-	 * @param customer - takes in a customer object, the id field will be used to
-	 *                 update that customer in the database
-	 * @return
-	 */
-	@Override
-	public Order update(Order order) {
-		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection
-						.prepareStatement("UPDATE orders SET custid = ?, orderlineid = ? WHERE id = ?");) {
-			statement.setLong(1, order.getCustId());
-			statement.setLong(2, order.getOrderLineId());
-			statement.setLong(3, order.getId());
-			statement.executeUpdate();
-			return read(order.getId());
-		} catch (Exception e) {
-			LOGGER.debug(e);
-			LOGGER.error(e.getMessage());
-		}
-		return null;
-	}
+//	/**
+//	 * Updates a customer in the database
+//	 * 
+//	 * @param customer - takes in a customer object, the id field will be used to
+//	 *                 update that customer in the database
+//	 * @return
+//	 */
+//	@Override
+//	public Order update(Order order) {
+//		try (Connection connection = DBUtils.getInstance().getConnection();
+//				PreparedStatement statement = connection
+//						.prepareStatement("UPDATE orders SET custid = ?, orderlineid = ? WHERE id = ?");) {
+//			statement.setLong(1, order.getCustId());
+//			statement.setLong(2, order.getOrderLineId());
+//			statement.setLong(3, order.getId());
+//			statement.executeUpdate();
+//			return read(order.getId());
+//		} catch (Exception e) {
+//			LOGGER.debug(e);
+//			LOGGER.error(e.getMessage());
+//		}
+//		return null;
+//	}
 
 	/**
 	 * Deletes a customer in the database
