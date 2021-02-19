@@ -44,12 +44,40 @@ public class ItemController implements CrudController<Item>{
 		 */
 		@Override
 		public Item create() {
-			LOGGER.info("Please enter a first name");
+			LOGGER.info("Please enter an item name");
 			String name = utils.getString();
 			LOGGER.info("Please enter a price");
 			Double price = utils.getDouble();
 			Item item = itemDAO.create(new Item(name, price));
 			LOGGER.info("Customer created");
 			return item;
+		}
+		
+		/**
+		 * Updates an existing customer by taking in user input
+		 */
+		@Override
+		public Item update() {
+			LOGGER.info("Please enter the id of the item you would like to update");
+			Long id = utils.getLong();
+			LOGGER.info("Please enter an item name");
+			String name = utils.getString();
+			LOGGER.info("Please enter a price");
+			Double price = utils.getDouble();
+			Item item = itemDAO.update(new Item(id, name, price));
+			LOGGER.info("Item Updated");
+			return item;
+		}
+		
+		/**
+		 * Deletes an existing customer by the id of the customer
+		 * 
+		 * @return
+		 */
+		@Override
+		public int delete() {
+			LOGGER.info("Please enter the id of the item you would like to delete");
+			Long id = utils.getLong();
+			return itemDAO.delete(id);
 		}
 }
