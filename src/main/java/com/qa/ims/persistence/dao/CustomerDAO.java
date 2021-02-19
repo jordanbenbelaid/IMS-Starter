@@ -61,7 +61,7 @@ public class CustomerDAO implements Dao<Customer> {
 		return null;
 	}
 
-	/**
+	/*
 	 * Creates a customer in the database
 	 * 
 	 * @param customer - takes in a customer object. id will be ignored
