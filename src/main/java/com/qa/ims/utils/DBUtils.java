@@ -34,7 +34,11 @@ public class DBUtils {
 		this.dbUser = dbProps.getProperty("db.user", "");
 		this.dbPassword = dbProps.getProperty("db.password", "");
 	}
-
+	
+	public int init() {
+		return this.init("../mian/resources/sql-schema.sql!", "../main/resources/sql-data.sql");
+	}
+	
 	public DBUtils() {
 		this("db.properties");
 	}
