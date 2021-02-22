@@ -23,11 +23,14 @@ public class OrderDAO implements Dao<Order> {
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
-		Integer quantity = resultSet.getInt("quantity");
-		Double price = resultSet.getDouble("price");
+		
 		String fName = resultSet.getString("fName");
 		String lName = resultSet.getString("lName");
-		return new Order(id, quantity, price, fName, lName);
+		Customer customer = new Customer(fName, lName);
+		
+		ArrayList<Item> items = new ArrayList<Item>();
+		return new Order(id, customer, items);
+		
 	}
 
 	/**
@@ -40,9 +43,9 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement
-						.executeQuery("select orders.id, customers.id as custid, items.itemName, "
-								+ "orderline.quantity, sum(quantity*\r\n" + "itemprice) as 'price for items'\r\n"
-								+ "from orders\r\n" + "inner join customers, items, orderline;");) {
+						.executeQuery("select orders.id as orderid, customers.id as custid, orderline.itemid, orderline.quantity from orders \r\n"
+								+ "inner join customers on customers.id = orders.custid\r\n"
+								+ "inner join orderline on orderline.orderid = orders.id;");) {
 
 			List<Order> orders = new ArrayList<>();
 			while (resultSet.next()) {
@@ -54,14 +57,15 @@ public class OrderDAO implements Dao<Order> {
 				items.add(order);
 			}
 			return orders;
-
+			
 		} catch (SQLException e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return new ArrayList<>();
-	}
 
+	}
+	
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
@@ -131,8 +135,8 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("UPDATE orders SET custid = ?, orderlineid = ? WHERE id = ?");) {
-			statement.setLong(1, order.getCustId());
-			statement.setLong(2, order.getOrderLineId());
+//			statement.setLong(1, order.getCustId());
+//			statement.setLong(2, order.getOrderLineId());
 			statement.setLong(3, order.getId());
 			statement.executeUpdate();
 			return read(order.getId());

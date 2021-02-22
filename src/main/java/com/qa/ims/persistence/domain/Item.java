@@ -17,6 +17,10 @@ public class Item {
 			this.setId(id);
 		}
 
+		public Item() {
+			
+		}
+
 		public Long getId() {
 			return id;
 		}
