@@ -41,10 +41,13 @@ public class OrderDAO implements Dao<Order>{
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");) {
 			List<Order> orders = new ArrayList<>();
+			List<Item> items = new ArrayList<>();
 			while (resultSet.next()) {
+				while (resultSet.next()) {
 				orders.add(modelFromResultSet(resultSet));
 			}
-
+				items.add((Item) resultSet);
+			}
 			return orders;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
