@@ -39,14 +39,18 @@ public class OrderDAO implements Dao<Order>{
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders");) {
+				ResultSet resultSet = statement.executeQuery("select orders.id, customers.id as custid, items.itemName, "
+						+ "orderline.quantity, sum(quantity*\r\n"
+						+ "itemprice) as 'price for items'\r\n"
+						+ "from orders\r\n"
+						+ "inner join customers, items, orderline;");) {
 			List<Order> orders = new ArrayList<>();
 			List<Item> items = new ArrayList<>();
 			while (resultSet.next()) {
 				while (resultSet.next()) {
 				orders.add(modelFromResultSet(resultSet));
 			}
-				items.add((Item) resultSet);
+				items.add((Item)resultSet);
 			}
 			return orders;
 		} catch (SQLException e) {
@@ -59,7 +63,11 @@ public class OrderDAO implements Dao<Order>{
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("SELECT * FROM orders ORDER BY id DESC LIMIT 1");) {
+				ResultSet resultSet = statement.executeQuery("select orders.id, customers.id as custid, items.itemName, "
+						+ "orderline.quantity, sum(quantity*\r\n"
+						+ "itemprice) as 'price for items'\r\n"
+						+ "from orders\r\n"
+						+ "inner join customers, items, orderline ORDER BY id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -93,7 +101,11 @@ public class OrderDAO implements Dao<Order>{
 	@Override
 	public Order read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("SELECT * FROM orders WHERE id = ?");) {
+				PreparedStatement statement = connection.prepareStatement("select orders.id, customers.id as custid, items.itemName, "
+						+ "orderline.quantity, sum(quantity*\r\n"
+						+ "itemprice) as 'price for items'\r\n"
+						+ "from orders\r\n"
+						+ "inner join customers, items, orderline; WHERE id = ?");) {
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
@@ -138,7 +150,7 @@ public class OrderDAO implements Dao<Order>{
 	@Override
 	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders WHERE id = ?");) {
+				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders, orderline WHERE orders.id & orderline.id = ?");) {
 			statement.setLong(1, id);
 			return statement.executeUpdate();
 		} catch (Exception e) {
