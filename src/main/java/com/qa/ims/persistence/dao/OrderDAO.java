@@ -23,10 +23,11 @@ public class OrderDAO implements Dao<Order>{
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
 		Long id = resultSet.getLong("id");
-		Long orderLineId = resultSet.getLong("orderLineId");
 		Integer quantity = resultSet.getInt("quantity");
-		return new Order(id, orderLineId, quantity);
-		
+		Double price = resultSet.getDouble("price");
+		String fName = resultSet.getString("fName");
+		String lName = resultSet.getString("lName");
+		return new Order(id, quantity, price, fName, lName);	
 	}
 	
 	/**
@@ -43,6 +44,7 @@ public class OrderDAO implements Dao<Order>{
 			while (resultSet.next()) {
 				orders.add(modelFromResultSet(resultSet));
 			}
+
 			return orders;
 		} catch (SQLException e) {
 			LOGGER.debug(e);
