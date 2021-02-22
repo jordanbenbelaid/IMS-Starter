@@ -16,7 +16,7 @@ import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.persistence.domain.Item;
 import com.qa.ims.utils.DBUtils;
 
-public class OrderDAO implements Dao<Order>{
+public class OrderDAO implements Dao<Order> {
 
 	public static final Logger LOGGER = LogManager.getLogger();
 
@@ -27,9 +27,9 @@ public class OrderDAO implements Dao<Order>{
 		Double price = resultSet.getDouble("price");
 		String fName = resultSet.getString("fName");
 		String lName = resultSet.getString("lName");
-		return new Order(id, quantity, price, fName, lName);	
+		return new Order(id, quantity, price, fName, lName);
 	}
-	
+
 	/**
 	 * Reads all orders from the database
 	 * 
@@ -39,35 +39,37 @@ public class OrderDAO implements Dao<Order>{
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("select orders.id, customers.id as custid, items.itemName, "
-						+ "orderline.quantity, sum(quantity*\r\n"
-						+ "itemprice) as 'price for items'\r\n"
-						+ "from orders\r\n"
-						+ "inner join customers, items, orderline;");) {
+				ResultSet resultSet = statement
+						.executeQuery("select orders.id, customers.id as custid, items.itemName, "
+								+ "orderline.quantity, sum(quantity*\r\n" + "itemprice) as 'price for items'\r\n"
+								+ "from orders\r\n" + "inner join customers, items, orderline;");) {
+
 			List<Order> orders = new ArrayList<>();
-			List<Item> items = new ArrayList<>();
 			while (resultSet.next()) {
+				Order order = new Order();
+				List<Item> items = new ArrayList<>();
 				while (resultSet.next()) {
-				orders.add(modelFromResultSet(resultSet));
-			}
-				items.add((Item)resultSet);
+					orders.add(modelFromResultSet(resultSet));
+				}
+				items.add(order);
 			}
 			return orders;
+
 		} catch (SQLException e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return new ArrayList<>();
 	}
-	
+
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery("select orders.id, customers.id as custid, items.itemName, "
-						+ "orderline.quantity, sum(quantity*\r\n"
-						+ "itemprice) as 'price for items'\r\n"
-						+ "from orders\r\n"
-						+ "inner join customers, items, orderline ORDER BY id DESC LIMIT 1");) {
+				ResultSet resultSet = statement
+						.executeQuery("select orders.id, customers.id as custid, items.itemName, "
+								+ "orderline.quantity, sum(quantity*\r\n" + "itemprice) as 'price for items'\r\n"
+								+ "from orders\r\n"
+								+ "inner join customers, items, orderline ORDER BY id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
@@ -76,7 +78,7 @@ public class OrderDAO implements Dao<Order>{
 		}
 		return null;
 	}
-	
+
 	/*
 	 * Creates a Order in the database
 	 * 
@@ -87,8 +89,8 @@ public class OrderDAO implements Dao<Order>{
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection
 						.prepareStatement("INSERT INTO orders(custid, orderlineid) VALUES (?, ?)");) {
-			statement.setLong(1, order.getCustId());
-			statement.setLong(2, order.getOrderLineId());
+//			statement.setLong(1, order.getCustId());
+//			statement.setLong(2, order.getOrderLineId());
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -97,15 +99,14 @@ public class OrderDAO implements Dao<Order>{
 		}
 		return null;
 	}
-	
+
 	@Override
 	public Order read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("select orders.id, customers.id as custid, items.itemName, "
-						+ "orderline.quantity, sum(quantity*\r\n"
-						+ "itemprice) as 'price for items'\r\n"
-						+ "from orders\r\n"
-						+ "inner join customers, items, orderline; WHERE id = ?");) {
+				PreparedStatement statement = connection
+						.prepareStatement("select orders.id, customers.id as custid, items.itemName, "
+								+ "orderline.quantity, sum(quantity*\r\n" + "itemprice) as 'price for items'\r\n"
+								+ "from orders\r\n" + "inner join customers, items, orderline; WHERE id = ?");) {
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
@@ -117,12 +118,12 @@ public class OrderDAO implements Dao<Order>{
 		}
 		return null;
 	}
-	
+
 	/**
 	 * Updates a order in the database
 	 * 
-	 * @param order - takes in a order object, the id field will be used to
-	 *                 update that order in the database
+	 * @param order - takes in a order object, the id field will be used to update
+	 *              that order in the database
 	 * @return
 	 */
 	@Override
@@ -150,7 +151,8 @@ public class OrderDAO implements Dao<Order>{
 	@Override
 	public int delete(long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("DELETE FROM orders, orderline WHERE orders.id & orderline.id = ?");) {
+				PreparedStatement statement = connection
+						.prepareStatement("DELETE FROM orders, orderline WHERE orders.id & orderline.id = ?");) {
 			statement.setLong(1, id);
 			return statement.executeUpdate();
 		} catch (Exception e) {

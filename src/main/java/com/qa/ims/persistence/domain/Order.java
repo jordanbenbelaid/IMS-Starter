@@ -16,6 +16,8 @@ public class Order {
 	private ArrayList<String> orderItems = new ArrayList<String>();
 
 	ArrayList<Item> items = new ArrayList<Item>();
+	
+	public Order() {}
 
 	public Order(Long id, Integer quantity, Double price, String fName, String lName) {
 		this.setId(id);
