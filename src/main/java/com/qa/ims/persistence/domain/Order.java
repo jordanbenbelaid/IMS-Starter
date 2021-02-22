@@ -8,6 +8,24 @@ public class Order {
 		private Item item;
 		private Long orderLineId;
 		
+		public Order (Long id, Long orderLineId, Integer quantity) {
+			this.setId(id);
+			this.setCustId(custId);
+//			this.setQuantity(quantity);
+		}
+
+		public Order(Long custId, Long orderLineId) {
+			this.setCustId(custId);
+			this.setOrderLineId(orderLineId);
+
+		}
+		
+		public Order(Long id, Long custId, Long orderLineId) {
+			this.setId(id);
+			this.setCustId(custId);
+			this.setOrderLineId(orderLineId);
+		}
+		
 		public Order(Long custId, Long orderLineId, Customer customer, Item item) {
 			this.setCustId(custId);
 			this.setOrderLineId(orderLineId);
