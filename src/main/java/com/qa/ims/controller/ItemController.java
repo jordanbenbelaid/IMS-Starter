@@ -12,7 +12,7 @@ import com.qa.ims.utils.Utils;
 
 public class ItemController implements CrudController<Item>{
 	/**
-	 * Takes in customer details for CRUD functionality
+	 * Takes in item details for CRUD functionality
 	 *
 	 */
 
