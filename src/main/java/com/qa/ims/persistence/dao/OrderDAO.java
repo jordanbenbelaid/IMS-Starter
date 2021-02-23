@@ -22,14 +22,14 @@ public class OrderDAO implements Dao<Order> {
 
 	@Override
 	public Order modelFromResultSet(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("id");
-		
-		String fName = resultSet.getString("fName");
-		String lName = resultSet.getString("lName");
-		Customer customer = new Customer(fName, lName);
-		
+		Long id = resultSet.getLong("orderid");
+//		String fName = resultSet.getString("fName");
+//		String lName = resultSet.getString("lName");
+		Customer customer = new Customer("Sam", "abdullah");
+		ArrayList<Integer> quantity = new ArrayList<Integer>();
 		ArrayList<Item> items = new ArrayList<Item>();
-		return new Order(id, customer, items);
+		
+		return new Order(id, customer, items, quantity);
 		
 	}
 
@@ -43,31 +43,43 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement
-						.executeQuery("select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders"
-								+ "inner join customers on customers.id = orders.custid"
+						.executeQuery("select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders "
+								+ "inner join customers on customers.id = orders.custid "
 								+ "inner join orderline on orderline.orderid = orders.id");) {
-
+System.out.println("TEST1");
 			List<Order> orders = new ArrayList<>();
+			
 			while (resultSet.next()) {
-				Order order = new Order();
-				List<Item> items = new ArrayList<>();
-				while (resultSet.next()) {
-					orders.add(modelFromResultSet(resultSet));
+				
+				Long custid = resultSet.getLong("custid");
+				ArrayList<Item> items = new ArrayList<>();
+				ArrayList<Integer> quantities = new ArrayList<>();
+				
+				while(resultSet.next()) {
+					System.out.println("TEST2");		
+//						items.add(new Item(resultSet.getLong("itemId")));
+//						System.out.println("TEST5");
+//						quantities.add(5);					
 				}
-				items.add(orders);
+				orders.add(groupOrder(resultSet, items, quantities));
 			}
 			return orders;
 			
 		} catch (SQLException e) {
+			System.out.println("TEST3");
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
 		return new ArrayList<>();
 	}
 	
-//	public void addItems(List<Item>items i) {
-//		items.add(i);
-//	}
+	//method for grouping items in an order
+	public Order groupOrder(ResultSet resultSet, ArrayList<Item> items, ArrayList<Integer> quantities) throws SQLException{
+		Long id = resultSet.getLong("orderid");
+		Customer customer = new Customer("Sam", "abdullah");
+		System.out.println("TEST4");
+		return new Order(id, customer, items, quantities);
+	}
 	
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();

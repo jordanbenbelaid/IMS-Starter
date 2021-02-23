@@ -16,9 +16,18 @@ public class Item {
 			this.setName(name);
 			this.setId(id);
 		}
+		
+		public Item(Long id) {
+			this.setId(id);
+		}
 
 		public Item() {
 			
+		}
+		
+		@Override
+		public String toString() {
+			return "id:" + id + " Item Name:" + name + " Price:" + getPrice();
 		}
 
 		public Long getId() {
