@@ -32,8 +32,7 @@ public class Order {
 	@Override
 	public String toString() {
 		return "id:" + id + " first name: " + customer.getFirstName() + " surname: " + customer.getSurname() 
-		 + " items:" + orderItems ;
-//		 + " quantity " + quantity;
+		 + " items:" + orderItems + " quantity " + quantity;
 	}
 
 	public Long getId() {

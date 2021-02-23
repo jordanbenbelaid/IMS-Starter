@@ -27,6 +27,7 @@ public class OrderDAO implements Dao<Order> {
 //		String lName = resultSet.getString("lName");
 		Customer customer = new Customer("Sam", "abdullah");
 		ArrayList<Item> items = new ArrayList<Item>();
+		ArrayList<Integer> quantity = new ArrayList<Integer>();
 
 		return new Order(id, customer, items);
 
@@ -54,6 +55,7 @@ public class OrderDAO implements Dao<Order> {
 				
 //				Long custid = resultSet.getLong("custid");
 				ArrayList<Item> items = new ArrayList<>();
+				ArrayList<Integer> quantity = new ArrayList<Integer>();
 				Statement statement2 = connection.createStatement();
 				ResultSet resultSet2 = statement2.executeQuery("select * from orderline "
 						+ "inner join orders on orderline.orderid = orders.id "
@@ -63,9 +65,9 @@ public class OrderDAO implements Dao<Order> {
 				while (resultSet2.next()) {
 
 					items.add(new Item(resultSet2.getLong("itemId"), resultSet2.getString("itemname"), resultSet2.getDouble("itemprice")));
-
+					quantity.add(resultSet2.getInt("quantity"));
 				}
-				orders.add(groupOrder(resultSet, items));
+				orders.add(groupOrder(resultSet, items, quantity));
 			}
 			return orders;
 
@@ -78,11 +80,11 @@ public class OrderDAO implements Dao<Order> {
 	}
 
 	// method for grouping items in an order
-	public Order groupOrder(ResultSet resultSet, ArrayList<Item> items) throws SQLException {
+	public Order groupOrder(ResultSet resultSet, ArrayList<Item> items,ArrayList<Integer> quantity) throws SQLException {
 		Long id = resultSet.getLong("orderid");
 		Customer customer = new Customer("Sam", "abdullah");
 
-		return new Order(id, customer, items);
+		return new Order(id, customer, items, quantity);
 	}
 
 	public Order readLatest() {
