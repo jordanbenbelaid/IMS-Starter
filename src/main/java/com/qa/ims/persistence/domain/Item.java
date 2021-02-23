@@ -14,7 +14,7 @@ public class Item {
 		public Item(Long id, String name, Double price) {
 			this.setId(id);
 			this.setName(name);
-			this.setId(id);
+			this.setPrice(price);
 		}
 		
 		public Item(Long id) {
@@ -27,7 +27,7 @@ public class Item {
 		
 		@Override
 		public String toString() {
-			return "id:" + id + " Item Name:" + name + " Price:" + getPrice();
+			return "id: " + id + " Item Name: " + name + " Price: £" + getPrice();
 		}
 
 		public Long getId() {

@@ -42,11 +42,12 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement.executeQuery(
-						"select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders "
-								+ "inner join customers on customers.id = orders.custid "
-								+ "inner join orderline on orderline.orderid = orders.id");) {
+//						"select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders "
+//								+ "inner join customers on customers.id = orders.custid "
+//								+ "inner join orderline on orderline.orderid = orders.id");) 
+						"select orders.id as orderid, customers.id as custid, customers.first_name from orders "
+						+ "inner join customers on customers.id = orders.custid");){
 
-			System.out.println("TEST1");
 			List<Order> orders = new ArrayList<>();
 
 			while (resultSet.next()) {
@@ -54,11 +55,14 @@ public class OrderDAO implements Dao<Order> {
 //				Long custid = resultSet.getLong("custid");
 				ArrayList<Item> items = new ArrayList<>();
 				Statement statement2 = connection.createStatement();
-				ResultSet resultSet2 = statement2.executeQuery("select * from orderline inner join orders on orderline.orderid = orders.id");
+				ResultSet resultSet2 = statement2.executeQuery("select * from orderline "
+						+ "inner join orders on orderline.orderid = orders.id "
+						+ "inner join items on items.id = orderline.itemid "
+						+ "where orderline.orderid = " + resultSet.getLong("orderid"));
 				
 				while (resultSet2.next()) {
 
-					items.add(new Item(resultSet2.getLong("itemId")));
+					items.add(new Item(resultSet2.getLong("itemId"), resultSet2.getString("itemname"), resultSet2.getDouble("itemprice")));
 
 				}
 				orders.add(groupOrder(resultSet, items));
