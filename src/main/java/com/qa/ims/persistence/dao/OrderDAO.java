@@ -28,9 +28,9 @@ public class OrderDAO implements Dao<Order> {
 		Customer customer = new Customer("Sam", "abdullah");
 		ArrayList<Integer> quantity = new ArrayList<Integer>();
 		ArrayList<Item> items = new ArrayList<Item>();
-		
+
 		return new Order(id, customer, items, quantity);
-		
+
 	}
 
 	/**
@@ -42,29 +42,33 @@ public class OrderDAO implements Dao<Order> {
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement
-						.executeQuery("select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders "
+				ResultSet resultSet = statement.executeQuery(
+						"select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders "
 								+ "inner join customers on customers.id = orders.custid "
 								+ "inner join orderline on orderline.orderid = orders.id");) {
-System.out.println("TEST1");
+
+			System.out.println("TEST1");
 			List<Order> orders = new ArrayList<>();
-			
+
 			while (resultSet.next()) {
 				
 				Long custid = resultSet.getLong("custid");
 				ArrayList<Item> items = new ArrayList<>();
 				ArrayList<Integer> quantities = new ArrayList<>();
+				Statement statement2 = connection.createStatement();
+				ResultSet resultSet2 = statement2.executeQuery("select * from orderline inner join orders on orderline.orderid = orders.id");
 				
-				while(resultSet.next()) {
-					System.out.println("TEST2");		
-//						items.add(new Item(resultSet.getLong("itemId")));
-//						System.out.println("TEST5");
-//						quantities.add(5);					
+				while (resultSet2.next()) {
+					System.out.println("TEST2");
+					items.add(new Item(resultSet.getLong("itemId"), resultSet.getString("name"), resultSet.getDouble("price")));
+					System.out.println("TEST5");
+//					quantities.add(resultSet.getInt("quantity"));
+//					System.out.println(resultSet2);
 				}
 				orders.add(groupOrder(resultSet, items, quantities));
 			}
 			return orders;
-			
+
 		} catch (SQLException e) {
 			System.out.println("TEST3");
 			LOGGER.debug(e);
@@ -72,20 +76,22 @@ System.out.println("TEST1");
 		}
 		return new ArrayList<>();
 	}
-	
-	//method for grouping items in an order
-	public Order groupOrder(ResultSet resultSet, ArrayList<Item> items, ArrayList<Integer> quantities) throws SQLException{
+
+	// method for grouping items in an order
+	public Order groupOrder(ResultSet resultSet, ArrayList<Item> items, ArrayList<Integer> quantities)
+			throws SQLException {
 		Long id = resultSet.getLong("orderid");
 		Customer customer = new Customer("Sam", "abdullah");
 		System.out.println("TEST4");
+
 		return new Order(id, customer, items, quantities);
 	}
-	
+
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement
-						.executeQuery("select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders"
+				ResultSet resultSet = statement.executeQuery(
+						"select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders"
 								+ "inner join customers on customers.id = orders.custid"
 								+ "inner join orderline on orderline.orderid = orders.id "
 								+ "ORDER BY id DESC LIMIT 1");) {
