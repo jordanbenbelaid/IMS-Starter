@@ -43,9 +43,9 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement
-						.executeQuery("select orders.id as orderid, customers.id as custid, orderline.itemid, orderline.quantity from orders \r\n"
-								+ "inner join customers on customers.id = orders.custid\r\n"
-								+ "inner join orderline on orderline.orderid = orders.id;");) {
+						.executeQuery("select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders"
+								+ "inner join customers on customers.id = orders.custid"
+								+ "inner join orderline on orderline.orderid = orders.id");) {
 
 			List<Order> orders = new ArrayList<>();
 			while (resultSet.next()) {
@@ -54,7 +54,7 @@ public class OrderDAO implements Dao<Order> {
 				while (resultSet.next()) {
 					orders.add(modelFromResultSet(resultSet));
 				}
-				items.add(order);
+				items.add(orders);
 			}
 			return orders;
 			
@@ -63,17 +63,20 @@ public class OrderDAO implements Dao<Order> {
 			LOGGER.error(e.getMessage());
 		}
 		return new ArrayList<>();
-
 	}
+	
+//	public void addItems(List<Item>items i) {
+//		items.add(i);
+//	}
 	
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement
-						.executeQuery("select orders.id, customers.id as custid, items.itemName, "
-								+ "orderline.quantity, sum(quantity*\r\n" + "itemprice) as 'price for items'\r\n"
-								+ "from orders\r\n"
-								+ "inner join customers, items, orderline ORDER BY id DESC LIMIT 1");) {
+						.executeQuery("select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders"
+								+ "inner join customers on customers.id = orders.custid"
+								+ "inner join orderline on orderline.orderid = orders.id "
+								+ "ORDER BY id DESC LIMIT 1");) {
 			resultSet.next();
 			return modelFromResultSet(resultSet);
 		} catch (Exception e) {

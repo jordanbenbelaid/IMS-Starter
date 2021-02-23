@@ -6,10 +6,14 @@ public class Order {
 
 	private Long id;
 	private Customer customer;
-
 	private ArrayList<Item> orderItems = new ArrayList<Item>();
 	
 	public Order() {}
+	
+	public Order(Long id, Customer customer) {
+		this.setId(id);
+		this.setCustomer(customer);
+	}
 	
 	public Order(Long id, Customer customer, ArrayList<Item>orderItems) {
 		this.setId(id);

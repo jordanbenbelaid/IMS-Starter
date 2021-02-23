@@ -5,7 +5,10 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.qa.ims.persistence.dao.CustomerDAO;
+import com.qa.ims.persistence.dao.ItemDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.Utils;
 
@@ -15,6 +18,8 @@ public class OrderController implements CrudController<Order>{
 	public static final Logger LOGGER = LogManager.getLogger();
 
 	private OrderDAO orderDAO;
+	private ItemDAO itemDAO;
+	private CustomerDAO customerDAO;
 	private Utils utils;
 
 	public OrderController(OrderDAO orderDAO, Utils utils) {
@@ -40,11 +45,13 @@ public class OrderController implements CrudController<Order>{
 	 */
 	@Override
 	public Order create() {
-		LOGGER.info("Please enter an customer ID");
-		Long custId = utils.getLong();
-		LOGGER.info("Please enter an orderline ID");
-		Long orderLineId = utils.getLong();
-		Order order = orderDAO.create(new Order(custId, orderLineId));
+		LOGGER.info("Please enter an order ID");
+		Long id = utils.getLong();
+		LOGGER.info("Please enter first and last name");
+		String fName = utils.getString();
+		String lName = utils.getString();
+		Customer customer = new Customer(fName, lName);
+		Order order = orderDAO.create(new Order(id, customer));
 		LOGGER.info("Order created");
 		return order;
 	}
@@ -60,7 +67,7 @@ public class OrderController implements CrudController<Order>{
 		Long custId = utils.getLong();
 		LOGGER.info("Please enter an orderline ID");
 		Long orderLineId = utils.getLong();
-		Order order = orderDAO.update(new Order(id, custId, orderLineId));
+		Order order = orderDAO.update(new Order());
 		LOGGER.info("Order Updated");
 		return order;
 	}
