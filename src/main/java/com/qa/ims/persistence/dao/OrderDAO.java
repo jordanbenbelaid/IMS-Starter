@@ -42,11 +42,7 @@ public class OrderDAO implements Dao<Order> {
 	public List<Order> readAll() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement.executeQuery(
-//						"select orders.id as orderid, customers.id as custid, customers.first_name, orderline.itemid, orderline.quantity from orders "
-//								+ "inner join customers on customers.id = orders.custid "
-//								+ "inner join orderline on orderline.orderid = orders.id");) 
-						"select orders.id as orderid, customers.id as custid, customers.first_name from orders "
+				ResultSet resultSet = statement.executeQuery("select orders.id as orderid, customers.id as custid, customers.first_name from orders "
 						+ "inner join customers on customers.id = orders.custid");){
 
 			List<Order> orders = new ArrayList<>();
