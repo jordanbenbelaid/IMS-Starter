@@ -36,7 +36,7 @@ public class DBUtils {
 	}
 	
 	public int init() {
-		return this.init("../mian/resources/sql-schema.sql!", "../main/resources/sql-data.sql");
+		return this.init("../main/resources/sql-schema.sql!", "../main/resources/sql-data.sql");
 	}
 	
 	public DBUtils() {

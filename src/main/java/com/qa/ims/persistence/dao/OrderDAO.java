@@ -26,10 +26,9 @@ public class OrderDAO implements Dao<Order> {
 //		String fName = resultSet.getString("fName");
 //		String lName = resultSet.getString("lName");
 		Customer customer = new Customer("Sam", "abdullah");
-		ArrayList<Integer> quantity = new ArrayList<Integer>();
 		ArrayList<Item> items = new ArrayList<Item>();
 
-		return new Order(id, customer, items, quantity);
+		return new Order(id, customer, items);
 
 	}
 
@@ -52,25 +51,22 @@ public class OrderDAO implements Dao<Order> {
 
 			while (resultSet.next()) {
 				
-				Long custid = resultSet.getLong("custid");
+//				Long custid = resultSet.getLong("custid");
 				ArrayList<Item> items = new ArrayList<>();
-				ArrayList<Integer> quantities = new ArrayList<>();
 				Statement statement2 = connection.createStatement();
 				ResultSet resultSet2 = statement2.executeQuery("select * from orderline inner join orders on orderline.orderid = orders.id");
 				
 				while (resultSet2.next()) {
-					System.out.println("TEST2");
-					items.add(new Item(resultSet.getLong("itemId"), resultSet.getString("name"), resultSet.getDouble("price")));
-					System.out.println("TEST5");
-//					quantities.add(resultSet.getInt("quantity"));
-//					System.out.println(resultSet2);
+
+					items.add(new Item(resultSet2.getLong("itemId")));
+
 				}
-				orders.add(groupOrder(resultSet, items, quantities));
+				orders.add(groupOrder(resultSet, items));
 			}
 			return orders;
 
 		} catch (SQLException e) {
-			System.out.println("TEST3");
+			System.out.println("Error message");
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
 		}
@@ -78,13 +74,11 @@ public class OrderDAO implements Dao<Order> {
 	}
 
 	// method for grouping items in an order
-	public Order groupOrder(ResultSet resultSet, ArrayList<Item> items, ArrayList<Integer> quantities)
-			throws SQLException {
+	public Order groupOrder(ResultSet resultSet, ArrayList<Item> items) throws SQLException {
 		Long id = resultSet.getLong("orderid");
 		Customer customer = new Customer("Sam", "abdullah");
-		System.out.println("TEST4");
 
-		return new Order(id, customer, items, quantities);
+		return new Order(id, customer, items);
 	}
 
 	public Order readLatest() {
