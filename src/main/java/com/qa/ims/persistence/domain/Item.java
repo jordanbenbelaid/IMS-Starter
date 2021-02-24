@@ -1,5 +1,7 @@
 package com.qa.ims.persistence.domain;
 
+import java.text.NumberFormat;
+
 public class Item {
 
 		private Long id;

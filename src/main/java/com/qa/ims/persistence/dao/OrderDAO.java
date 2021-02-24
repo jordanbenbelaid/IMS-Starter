@@ -26,18 +26,18 @@ public class OrderDAO implements Dao<Order> {
 		Long custId = resultSet.getLong("custid");
 		String fName = resultSet.getString("first_name");
 		String lName = resultSet.getString("surname");
-		Customer customer = new Customer(fName, lName);
+		Customer customer = new Customer(custId, fName, lName);
 		ArrayList<Item> items = new ArrayList<Item>();
 
 		return new Order(id, customer, items);
 
 	}
 
-	public Order modelFromResultSetCreateOrder(ResultSet resultSet) throws SQLException {
-		Long id = resultSet.getLong("id");
-		Long custId = resultSet.getLong("custid");
-		return new Order(id, custId);
-	}
+//	public Order modelFromResultSetCreateOrder(ResultSet resultSet) throws SQLException {
+//		Long id = resultSet.getLong("id");
+//		Long custId = resultSet.getLong("custid");
+//		return new Order(id, custId);
+//	}
 
 	/**
 	 * Reads all orders from the database
@@ -98,9 +98,11 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
 				ResultSet resultSet = statement
-						.executeQuery("select * from orders " + "ORDER BY orders.id DESC LIMIT 1");) {
+						.executeQuery("select * from orders "
+								+ "inner join customers on customers.id = orders.custid " 
+								+ "ORDER BY orders.id DESC LIMIT 1");) {
 			resultSet.next();
-			return modelFromResultSetCreateOrder(resultSet);
+			return modelFromResultSet(resultSet);
 		} catch (Exception e) {
 			LOGGER.debug(e);
 			LOGGER.error(e.getMessage());
@@ -119,7 +121,7 @@ public class OrderDAO implements Dao<Order> {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("INSERT INTO orders(custid) VALUES (?)");) {
 
-			statement.setLong(1, order.getCustId()); // check
+			statement.setLong(1, order.getCustomer().getId()); // check
 			statement.executeUpdate();
 			return readLatest();
 		} catch (Exception e) {
@@ -128,12 +130,15 @@ public class OrderDAO implements Dao<Order> {
 		}
 		return null;
 	}
+	
+	public Order createOrderForCustomer(Customer customer) {
+		return new Order(customer);
+	}
 
 	@Override
 	public Order read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
-				PreparedStatement statement = connection.prepareStatement("select orders.id as orderid, "
-						+ "customers.id as custid, customers.first_name, customers.surname from orders "
+				PreparedStatement statement = connection.prepareStatement("select * from orders "
 						+ "inner join customers on customers.id = orders.custid");) {
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery();) {

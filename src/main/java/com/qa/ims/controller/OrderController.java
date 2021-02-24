@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import com.qa.ims.persistence.dao.CustomerDAO;
 import com.qa.ims.persistence.dao.OrderDAO;
+import com.qa.ims.persistence.domain.Customer;
 import com.qa.ims.persistence.domain.Order;
 import com.qa.ims.utils.Utils;
 
@@ -40,9 +42,15 @@ public class OrderController implements CrudController<Order>{
 	 */
 	@Override
 	public Order create() {
+		CustomerDAO customerDAO = new CustomerDAO();
+		
 		LOGGER.info("Please enter an existing customer ID");
 		Long custId = utils.getLong();
-		Order order = orderDAO.create(new Order(custId));
+		Customer customer = customerDAO.read(custId);
+		
+		Order customerOrder = orderDAO.createOrderForCustomer(customer);
+		Order order = orderDAO.create(customerOrder);
+		
 		LOGGER.info("Order created");
 		return order;		
 	}

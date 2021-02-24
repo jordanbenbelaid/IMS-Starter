@@ -1,11 +1,12 @@
 package com.qa.ims.persistence.domain;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 
 public class Order {
 
 	private Long id;
-	private Long custId;
 	private Long itemId;
 	private Long quantity;
 	private Customer customer;
@@ -15,17 +16,13 @@ public class Order {
 	public Order() {}
 	
 	public Order(Long Id, Long itemId, Long quantity) {
-		this.setId(itemId);
+		this.setId(Id);
 		this.setItemId(itemId);
 		this.setQuantity(quantity);
 	}
-	public Order(Long Id, Long custId) {
-		this.setId(custId);
-		this.setCustId(custId);
-	}
-	
-	public Order(Long custId) {
-		this.setCustId(custId);
+	public Order(Long Id, Long itemId) {
+		this.setId(Id);
+		this.setItemId(itemId);
 	}
 	
 	public Order(Customer customer) {
@@ -53,23 +50,25 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order id: " + id + " first name: " + customer.getFirstName() + " surname: " + customer.getSurname() 
-		 + " items:" + orderItems + " quantity " + quantities;
+		 + " items:" + orderItems + " quantity " + quantities + " total price: £" + costOfOrder();
 	}
 
+		//calculating cost of order, each item price gets multiplied by corresponding quantity
+	private String costOfOrder() {
+		Double total = 0.0;
+		for(int i = 0; i<orderItems.size(); i++) {
+			total += orderItems.get(i).getPrice()*quantities.get(i);
+		}
+		NumberFormat formatter = new DecimalFormat("#0.00");     
+		return formatter.format(total);
+	}
+	
 	public Long getId() {
 		return id;
 	}
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-	
-	public Long getCustId() {
-		return custId;
-	}
-
-	public void setCustId(Long custId) {
-		this.custId = custId;
 	}
 
 	public Customer getCustomer() {
@@ -116,7 +115,6 @@ public class Order {
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		result = prime * result + ((custId == null) ? 0 : custId.hashCode());
 		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
 		result = prime * result + ((itemId == null) ? 0 : itemId.hashCode());
@@ -135,11 +133,6 @@ public class Order {
 		if (getClass() != obj.getClass())
 			return false;
 		Order other = (Order) obj;
-		if (custId == null) {
-			if (other.custId != null)
-				return false;
-		} else if (!custId.equals(other.custId))
-			return false;
 		if (customer == null) {
 			if (other.customer != null)
 				return false;
@@ -173,6 +166,5 @@ public class Order {
 		return true;
 	}
 
-	
 	
 }
