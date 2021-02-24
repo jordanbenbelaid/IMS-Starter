@@ -1,5 +1,7 @@
 package com.qa.ims.persistence.domain;
 
+import java.text.NumberFormat;
+
 public class Item {
 
 		private Long id;
@@ -14,7 +16,20 @@ public class Item {
 		public Item(Long id, String name, Double price) {
 			this.setId(id);
 			this.setName(name);
+			this.setPrice(price);
+		}
+		
+		public Item(Long id) {
 			this.setId(id);
+		}
+
+		public Item() {
+			
+		}
+		
+		@Override
+		public String toString() {
+			return "id: " + id + " Item Name: " + name + " Price: £" + getPrice();
 		}
 
 		public Long getId() {
