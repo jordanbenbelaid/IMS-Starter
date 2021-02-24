@@ -6,11 +6,27 @@ public class Order {
 
 	private Long id;
 	private Long custId;
+	private Long itemId;
+	private Long quantity;
 	private Customer customer;
-	private ArrayList<Integer> quantity = new ArrayList<Integer>();
+	private ArrayList<Integer> quantities = new ArrayList<Integer>();
 	private ArrayList<Item> orderItems = new ArrayList<Item>();
 	
 	public Order() {}
+	
+	public Order(Long Id, Long itemId, Long quantity) {
+		this.setId(itemId);
+		this.setItemId(itemId);
+		this.setQuantity(quantity);
+	}
+	public Order(Long Id, Long custId) {
+		this.setId(custId);
+		this.setCustId(custId);
+	}
+	
+	public Order(Long custId) {
+		this.setCustId(custId);
+	}
 	
 	public Order(Customer customer) {
 		this.setCustomer(customer);
@@ -21,11 +37,11 @@ public class Order {
 		this.setCustomer(customer);
 	}
 	
-	public Order(Long id, Customer customer, ArrayList<Item> orderItems, ArrayList<Integer> quantity) {
+	public Order(Long id, Customer customer, ArrayList<Item> orderItems, ArrayList<Integer> quantities) {
 		this.setId(id);
 		this.setCustomer(customer);
 		this.setOrderItems(orderItems);
-		this.setQuantity(quantity);
+		this.setQuantities(quantities);
 	}
 	
 	public Order(Long id, Customer customer, ArrayList<Item>orderItems) {
@@ -37,7 +53,7 @@ public class Order {
 	@Override
 	public String toString() {
 		return "Order id: " + id + " first name: " + customer.getFirstName() + " surname: " + customer.getSurname() 
-		 + " items:" + orderItems + " quantity " + quantity;
+		 + " items:" + orderItems + " quantity " + quantities;
 	}
 
 	public Long getId() {
@@ -60,16 +76,32 @@ public class Order {
 		return customer;
 	}
 
+	public Long getItemId() {
+		return itemId;
+	}
+
+	public void setItemId(Long itemId) {
+		this.itemId = itemId;
+	}
+
+	public Long getQuantity() {
+		return quantity;
+	}
+
+	public void setQuantity(Long quantity) {
+		this.quantity = quantity;
+	}
+
 	public void setCustomer(Customer customer) {
 		this.customer = customer;
 	}
 
-	public ArrayList<Integer> getQuantity() {
-		return quantity;
+	public ArrayList<Integer> getQuantities() {
+		return quantities;
 	}
 
-	public void setQuantity(ArrayList<Integer> quantity) {
-		this.quantity = quantity;
+	public void setQuantities(ArrayList<Integer> quantities) {
+		this.quantities = quantities;
 	}
 
 	public ArrayList<Item> getOrderItems() {
@@ -87,7 +119,9 @@ public class Order {
 		result = prime * result + ((custId == null) ? 0 : custId.hashCode());
 		result = prime * result + ((customer == null) ? 0 : customer.hashCode());
 		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		result = prime * result + ((itemId == null) ? 0 : itemId.hashCode());
 		result = prime * result + ((orderItems == null) ? 0 : orderItems.hashCode());
+		result = prime * result + ((quantities == null) ? 0 : quantities.hashCode());
 		result = prime * result + ((quantity == null) ? 0 : quantity.hashCode());
 		return result;
 	}
@@ -116,10 +150,20 @@ public class Order {
 				return false;
 		} else if (!id.equals(other.id))
 			return false;
+		if (itemId == null) {
+			if (other.itemId != null)
+				return false;
+		} else if (!itemId.equals(other.itemId))
+			return false;
 		if (orderItems == null) {
 			if (other.orderItems != null)
 				return false;
 		} else if (!orderItems.equals(other.orderItems))
+			return false;
+		if (quantities == null) {
+			if (other.quantities != null)
+				return false;
+		} else if (!quantities.equals(other.quantities))
 			return false;
 		if (quantity == null) {
 			if (other.quantity != null)
@@ -128,5 +172,7 @@ public class Order {
 			return false;
 		return true;
 	}
+
+	
 	
 }

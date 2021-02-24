@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS `ims`.`customers` (
 );
 
 CREATE TABLE IF NOT EXISTS `items` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `itemname` varchar(100) NOT NULL,
   `itemprice` double NOT NULL,
   PRIMARY KEY (`id`)
@@ -20,7 +20,7 @@ CREATE TABLE IF NOT EXISTS `items` (
 
 
 CREATE TABLE IF NOT EXISTS `orders` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `custid` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `custid` (`custid`),
@@ -28,7 +28,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
 );
 
 CREATE TABLE `orderline` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `orderid` int DEFAULT NULL,
   `itemid` int DEFAULT NULL,
   `quantity` int DEFAULT NULL,
