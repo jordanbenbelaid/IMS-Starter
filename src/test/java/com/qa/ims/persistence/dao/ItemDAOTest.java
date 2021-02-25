@@ -23,6 +23,12 @@ public class ItemDAOTest {
 		}
 		
 		@Test
+		public void testCreateException() {
+			Item item = new Item();
+			assertNull(DAO.create(item));
+		}
+		
+		@Test
 		public void testCreate() {
 			final Item created = new Item(2L, "chocolate", 1.5);
 			assertEquals(created, DAO.create(created));
@@ -35,12 +41,11 @@ public class ItemDAOTest {
 			assertEquals(expected, DAO.readAll());
 		}
 		
-//		@Test
-//		public void testReadAllException() {
-//			List<Item> expected = new ArrayList<>();
-//			expected.add(new Item(6L, "orange", 2.4));
-//			assertNull(expected);
-//		}
+		@Test
+		public void testReadLatestException() {
+			DAO.delete(1L);
+			assertNull(DAO.readLatest());
+		}
 
 		@Test
 		public void testReadLatest() {
@@ -48,17 +53,33 @@ public class ItemDAOTest {
 		}
 
 		@Test
+		public void testReadException() {
+			DAO.delete(1L);
+			assertNull(DAO.read(1L));
+		}
+		
+		@Test
 		public void testRead() {
 			final long ID = 1L;
 			assertEquals(new Item(ID, "crisps", 3.5), DAO.read(ID));
+		}
+		
+		@Test
+		public void testUpdateException() {
+			Item item = new Item();
+			assertNull(DAO.update(item));
 		}
 
 		@Test
 		public void testUpdate() {
 			final Item updated = new Item(1L, "chocolate", 3.5);
 			assertEquals(updated, DAO.update(updated));
-
 		}
+		
+//		@Test
+//		public void testDeleteException() {
+//			assertEquals(0, DAO.delete(6));
+//		}
 
 		@Test
 		public void testDelete() {
