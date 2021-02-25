@@ -1,8 +1,7 @@
-DROP TABLE `customers`;
-DROP TABLE `items`;
-DROP TABLE `orders`;
 DROP TABLE `orderline`;
-
+DROP TABLE `orders`;
+DROP TABLE `items`;
+DROP TABLE `customers`;
 
 CREATE TABLE IF NOT EXISTS `customers` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
