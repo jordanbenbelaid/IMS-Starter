@@ -23,7 +23,7 @@ CREATE TABLE IF NOT EXISTS `orders` (
   `custid` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `custid` (`custid`),
-  FOREIGN KEY (`custid`) REFERENCES `customers` (`id`)
+  FOREIGN KEY (`custid`) REFERENCES `customers` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `orderline` (
@@ -35,6 +35,7 @@ CREATE TABLE `orderline` (
   PRIMARY KEY (`id`),
   KEY `orderid` (`orderid`),
   KEY `itemid` (`itemid`),
-  FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`),
-  FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
+  FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`itemid`) REFERENCES `items` (`id`) ON DELETE CASCADE
 );
+

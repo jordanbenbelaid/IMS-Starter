@@ -40,10 +40,9 @@ public class ItemTest {
 	
 	@Test
 	public void itemGetPriceTest() {
-		Double price = 2.5;
-		Item item = new Item(" ", price);
+		Item item = new Item(" ", 2.5);
 		
-		assertEquals(price, item.getPrice());
+		assertEquals((Double)2.5, item.getPrice());
 	}
 	
 	@Test
