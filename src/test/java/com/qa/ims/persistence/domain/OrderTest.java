@@ -33,7 +33,7 @@ public class OrderTest {
 		String result = order.toString();
 		
 		String expected = "Order id: " + null + " first name: " + null + " surname: " + 
-				null + " items:" + new ArrayList<Item>() + " quantity " + new ArrayList<Integer>() + " total price: £" + "0.00";
+				null + " items:" + new ArrayList<Item>() + " quantity " + new ArrayList<Integer>() + " total price: ï¿½" + "0.00";
 	
 		assertEquals(expected, result);
 	}
