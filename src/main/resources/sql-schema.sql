@@ -1,10 +1,10 @@
-drop schema ims;
+DROP TABLE `customers`;
+DROP TABLE `items`;
+DROP TABLE `orders`;
+DROP TABLE `orderline`;
 
-CREATE SCHEMA IF NOT EXISTS `ims`;
 
-USE `ims` ;
-
-CREATE TABLE IF NOT EXISTS `ims`.`customers` (
+CREATE TABLE IF NOT EXISTS `customers` (
     `id` INT(11) NOT NULL AUTO_INCREMENT,
     `first_name` VARCHAR(40) DEFAULT NULL,
     `surname` VARCHAR(40) DEFAULT NULL,
@@ -12,32 +12,28 @@ CREATE TABLE IF NOT EXISTS `ims`.`customers` (
 );
 
 CREATE TABLE IF NOT EXISTS `items` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `itemname` varchar(100) NOT NULL,
-  `itemprice` float NOT NULL,
+  `itemprice` double NOT NULL,
   PRIMARY KEY (`id`)
-);
+); 
+
 
 CREATE TABLE IF NOT EXISTS `orders` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `custid` int NOT NULL,
-  `orderid` int NOT NULL,
   PRIMARY KEY (`id`),
-  KEY `custid` (`custid`),
-  KEY `orderid` (`orderid`),
-  FOREIGN KEY (`custid`) REFERENCES `customers` (`id`),
-  FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`)
+  FOREIGN KEY (`custid`) REFERENCES `customers` (`id`) ON DELETE CASCADE
 );
 
 CREATE TABLE `orderline` (
-  `id` int NOT NULL,
+  `id` int NOT NULL AUTO_INCREMENT,
   `orderid` int DEFAULT NULL,
   `itemid` int DEFAULT NULL,
   `quantity` int DEFAULT NULL,
-  `price` float DEFAULT NULL,
+  `price` double DEFAULT NULL,
   PRIMARY KEY (`id`),
-  KEY `orderid` (`orderid`),
-  KEY `itemid` (`itemid`),
-  FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`),
-  FOREIGN KEY (`itemid`) REFERENCES `items` (`id`)
-) 
+  FOREIGN KEY (`orderid`) REFERENCES `orders` (`id`) ON DELETE CASCADE,
+  FOREIGN KEY (`itemid`) REFERENCES `items` (`id`) ON DELETE CASCADE
+);
+
