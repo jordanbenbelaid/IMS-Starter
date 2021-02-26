@@ -54,7 +54,7 @@ public class Order {
 	}
 
 		//calculating cost of order, each item price gets multiplied by corresponding quantity
-	private String costOfOrder() {
+	public String costOfOrder() {
 		Double total = 0.0;
 		for(int i = 0; i<orderItems.size(); i++) {
 			total += orderItems.get(i).getPrice()*quantities.get(i);

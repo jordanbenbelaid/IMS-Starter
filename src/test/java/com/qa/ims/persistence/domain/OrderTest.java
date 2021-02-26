@@ -24,6 +24,45 @@ public class OrderTest {
 	}
 	
 	@Test
+	public void toStringTest() {
+		Order order = new Order();
+		Customer customer = new Customer(null, null);
+		
+		order.setCustomer(customer);
+		
+		String result = order.toString();
+		
+		String expected = "Order id: " + null + " first name: " + null + " surname: " + 
+				null + " items:" + new ArrayList<Item>() + " quantity " + new ArrayList<Integer>() + " total price: �" + "0.00";
+	
+		assertEquals(expected, result);
+	}
+	
+	@Test 
+	public void costOfOrderTest() {
+		//given
+		//made up order list to check functionality
+		ArrayList<Item> fakeOrderItems = new ArrayList<Item>();
+		ArrayList<Integer> fakeQuantities = new ArrayList<Integer>();
+		
+		fakeOrderItems.add(new Item("Crisps", 2.0));
+		fakeOrderItems.add(new Item("Drink", 1.0));
+		
+		fakeQuantities.add(3);
+		fakeQuantities.add(5);
+
+		Order order = new Order(null, null, fakeOrderItems, fakeQuantities);
+		
+		//when
+		String result = order.costOfOrder();
+		
+		//then
+		String expected = "11.00";
+		
+		assertEquals(expected, result);
+	}
+	
+	@Test
 	public void orderGetIdTest() {
 		Long id = 1L;
 		Order order = new Order(1L, 0L);

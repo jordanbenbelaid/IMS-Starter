@@ -33,12 +33,6 @@ public class OrderDAO implements Dao<Order> {
 
 	}
 
-//	public Order modelFromResultSetCreateOrder(ResultSet resultSet) throws SQLException {
-//		Long id = resultSet.getLong("id");
-//		Long custId = resultSet.getLong("custid");
-//		return new Order(id, custId);
-//	}
-
 	/**
 	 * Reads all orders from the database
 	 * 
@@ -97,8 +91,7 @@ public class OrderDAO implements Dao<Order> {
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement
-						.executeQuery("select * from orders "
+				ResultSet resultSet = statement.executeQuery("select * from orders "
 								+ "inner join customers on customers.id = orders.custid " 
 								+ "ORDER BY orders.id DESC LIMIT 1");) {
 			resultSet.next();
@@ -139,7 +132,8 @@ public class OrderDAO implements Dao<Order> {
 	public Order read(Long id) {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				PreparedStatement statement = connection.prepareStatement("select * from orders "
-						+ "inner join customers on customers.id = orders.custid");) {
+						+ "inner join customers on customers.id = orders.custid "
+						+ "WHERE custid = ?");) {
 			statement.setLong(1, id);
 			try (ResultSet resultSet = statement.executeQuery();) {
 				resultSet.next();
