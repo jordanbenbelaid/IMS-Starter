@@ -43,7 +43,7 @@ public class OrderControllerTest {
 		//mocks getting cust id without reading sql db
 		Mockito.when(utils.getLong()).thenReturn(1L);
 		//returning fake customer without sql call
-		Mockito.when(custDao.read(1L)).thenReturn(customer);
+//		Mockito.when(custDao.read(1L)).thenReturn(customer);
 		//mock fake order with fake customer made
 		Mockito.when(orderDao.createOrderForCustomer(Mockito.any())).thenReturn(new Order(customer));
 		//create order for customer method, creates fake order for fake customer
