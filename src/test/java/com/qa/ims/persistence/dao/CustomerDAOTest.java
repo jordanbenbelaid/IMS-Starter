@@ -24,8 +24,7 @@ public class CustomerDAOTest {
 
 	@Test
 	public void testCreateException() {
-		Customer customer = new Customer();
-		assertNull(DAO.create(customer));
+		assertNull(DAO.create(null));
 	}
 	
 	@Test

@@ -97,8 +97,7 @@ public class OrderDAO implements Dao<Order> {
 	public Order readLatest() {
 		try (Connection connection = DBUtils.getInstance().getConnection();
 				Statement statement = connection.createStatement();
-				ResultSet resultSet = statement
-						.executeQuery("select * from orders "
+				ResultSet resultSet = statement.executeQuery("select * from orders "
 								+ "inner join customers on customers.id = orders.custid " 
 								+ "ORDER BY orders.id DESC LIMIT 1");) {
 			resultSet.next();
