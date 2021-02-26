@@ -27,7 +27,7 @@ Check everything is running as should be!
 
 ## Running the tests
 
-Explain how to run the automated tests for this system. Break down into which tests and what they do
+The testing has been done through JUnit and Mockito, which can be run through the IDE, following the steps in the 'Unit Tests' section below.
 
 ### Unit Tests 
 
