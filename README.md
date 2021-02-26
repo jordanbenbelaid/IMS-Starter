@@ -1,7 +1,9 @@
-Coverage: 34%
-# Project Title
+Coverage: 80.02%
+# IMS-Starter
 
-One Paragraph of project description goes here
+The IMS-Starter project is an information system that aims to act as a way of storing orders, customers and items in a database.
+Each part has the option to create, read, update and delete functions, with orders being able to have an item added and deleted from an order.
+Orders contain a customer and items so that the user knows who has what item in their order, as well as a total price for the whole order.
 
 ## Getting Started
 
@@ -9,29 +11,19 @@ These instructions will get you a copy of the project up and running on your loc
 
 ### Prerequisites
 
-What things you need to install the software and how to install them
-
-```
-Give examples
-```
+Java Eclipse IDE
+Maven
+MySql workbench (optional)
 
 ### Installing
 
-A step by step series of examples that tell you how to get a development env running
+1. Clone repository to any folder you like in your device from branch: master
+2. Open Eclipse IDE
+3. Go to File ---> Open projects from File System, find IMS-Starter and click into it, and click finish (this will import the project into your Eclipse IDE so you can edit it as you wish)
+4. Run 'mvn package' from the command line in the IMS-Starter folder
+5. All set!
 
-Say what the step will be
-
-```
-Give the example
-```
-
-And repeat
-
-```
-until finished
-```
-
-End with an example of getting some data out of the system or using it for a little demo
+Check everything is running as should be!
 
 ## Running the tests
 
@@ -39,30 +31,19 @@ Explain how to run the automated tests for this system. Break down into which te
 
 ### Unit Tests 
 
-Explain what these tests test, why and how to run them
+To run the unit tests, right click on the project folder itself in the Eclipse IDE, and choose Coverage as ---> JUnit test
 
-```
-Give an example
-```
-
-### Integration Tests 
-Explain what these tests test, why and how to run them
-
-```
-Give an example
-```
-
-### And coding style tests
-
-Explain what these tests test and why
-
-```
-Give an example
-```
+This will run all tests in the IMS folder, and show the coverages of each class in the main file.
 
 ## Deployment
 
-Add additional notes about how to deploy this on a live system
+Once mvn package has been run in the command line (from the ims folder itself) there will be a target folder in the IMS-Starter folder, which you then want to run the command line from inside here.
+
+Once you are in the command line in this folder, run the command 'java -jar ims-0.0.1-jar-with-dependencies.jar file.
+
+This will then open the project as in the command line as if you are running the project in the console in Eclipse.
+
+(If you want to run it in eclipse, find the runner.java file in the com.qa.ims package as a java application and it will have the same effect)
 
 ## Built With
 
@@ -70,7 +51,7 @@ Add additional notes about how to deploy this on a live system
 
 ## Versioning
 
-We use [SemVer](http://semver.org/) for versioning.
+We use git for versioning.
 
 ## Authors
 
@@ -84,6 +65,5 @@ This project is licensed under the MIT license - see the [LICENSE.md](LICENSE.md
 
 ## Acknowledgments
 
-* Hat tip to anyone whose code was used
-* Inspiration
-* etc
+* Hat tip to Edward Reynolds for the support!
+
