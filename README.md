@@ -56,6 +56,7 @@ We use git for versioning.
 ## Authors
 
 * **Chris Perrins** - *Initial work* - [christophperrins](https://github.com/christophperrins)
+* **Jordan Benbelaid** - *Completed project* - [jordanbenbelaid](https://github.com/jordanbenbelaid)
 
 ## License
 
